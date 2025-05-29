@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ステータス管理アプリ</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .status { margin-bottom: 10px; }
+    .bar {
+      height: 20px;
+      background-color: lightgray;
+      margin-top: 5px;
+      width: 100%;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      background-color: steelblue;
+      text-align: right;
+      padding-right: 5px;
+      color: white;
+      font-size: 12px;
+    }
+    button {
+      margin: 5px;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>今日のステータス</h1>
+
+  <div class="status">
+    <strong>HP:</strong>
+    <div class="bar"><div id="hp-bar" class="fill" style="width:100%">100</div></div>
+  </div>
+
+  <div class="status">
+    <strong>MP:</strong>
+    <div class="bar"><div id="mp-bar" class="fill" style="width:100%">100</div></div>
+  </div>
+
+  <div class="status">
+    <strong>対人能力:</strong> <span id="comm">0</span><br>
+    <strong>企画力:</strong> <span id="plan">0</span><br>
+    <strong>論理力:</strong> <span id="logic">0</span>
+  </div>
+
+  <h2>今日やったこと</h2>
+  <div id="actions">
+    <button onclick="logAction('睡眠8時間')">睡眠8時間</button>
+    <button onclick="logAction('仕事をした')">仕事をした</button>
+    <button onclick="logAction('出社した')">出社した</button>
+    <button onclick="logAction('ごろごろした')">ごろごろした</button>
+    <button onclick="logAction('読書をした')">読書をした</button>
+    <button onclick="logAction('推しを見て癒された')">推しを見て癒された</button>
+    <button onclick="logAction('湯船に浸かった')">湯船に浸かった</button>
+    <button onclick="logAction('野菜を食べた')">野菜を食べた</button>
+  </div>
+
+  <script>
+    let stats = {
+      hp: 100,
+      mp: 100,
+      communication: 0,
+      planning: 0,
+      logic: 0
+    };
+
+    function updateDisplay() {
+      document.getElementById("hp-bar").style.width = stats.hp + "%";
+      document.getElementById("mp-bar").style.width = stats.mp + "%";
+      document.getElementById("hp-bar").innerText = stats.hp;
+      document.getElementById("mp-bar").innerText = stats.mp;
+      document.getElementById("comm").innerText = stats.communication;
+      document.getElementById("plan").innerText = stats.planning;
+      document.getElementById("logic").innerText = stats.logic;
+    }
+
+    function logAction(action) {
+      switch (action) {
+        case "睡眠8時間":
+          stats.hp = Math.min(stats.hp + 10, 100);
+          stats.mp = Math.min(stats.mp + 5, 100);
+          break;
+        case "仕事をした":
+          stats.hp = Math.max(stats.hp - 20, 0);
+          stats.mp = Math.max(stats.mp - 3, 0);
+          stats.planning += 1;
+          break;
+        case "出社した":
+          stats.hp = Math.max(stats.hp - 20, 0);
+          stats.mp = Math.max(stats.mp - 3, 0);
+          stats.communication += 1;
+          break;
+        case "ごろごろした":
+          stats.hp = Math.min(stats.hp + 10, 100);
+          stats.mp = Math.min(stats.mp + 2, 100);
+          break;
+        case "読書をした":
+          stats.hp = Math.max(stats.hp - 2, 0);
+          stats.mp = Math.max(stats.mp - 2, 0);
+          stats.logic += 2;
+          break;
+        case "推しを見て癒された":
+          stats.mp = Math.min(stats.mp + 5, 100);
+          stats.hp = Math.min(stats.hp + 2, 100);
+          break;
+        case "湯船に浸かった":
+          stats.hp = Math.min(stats.hp + 5, 100);
+          stats.mp = Math.min(stats.mp + 3, 100);
+          break;
+        case "野菜を食べた":
+          stats.hp = Math.min(stats.hp + 2, 100);
+          stats.mp = Math.min(stats.mp + 1, 100);
+          break;
+      }
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+
+</body>
+</html>
+
