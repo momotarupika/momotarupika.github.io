@@ -58,6 +58,7 @@
   </div>
 
   <h2>今日やったこと</h2>
+  <button id="saveBtn">今日の記録を保存</button>
   <div id="actions">
     <button onclick="logAction('睡眠8時間')">睡眠8時間</button>
     <button onclick="logAction('仕事をした')">仕事をした</button>
@@ -130,6 +131,12 @@
     }
 
     updateDisplay();
+    document.getElementById("saveBtn").addEventListener("click", function() {
+  const today = new Date().toISOString().slice(0,10); // 例: "2025-05-31"
+  localStorage.setItem(today, JSON.stringify(stats));
+  alert("今日の記録を保存しました！");
+});
+
   </script>
 
 </body>
