@@ -73,14 +73,16 @@
 　<a href="history.html">保存した履歴を見る</a>
 
   <script>
-    let stats = {
-      hp: 100,
-      mp: 100,
-      communication: 0,
-      planning: 0,
-      logic: 0
-    };
+let stats = {
+  hp: 100,
+  mp: 100,
+  communication: 0,
+  planning: 0,
+  logic: 0
+};
 
+let actionsLog = {};  // やったことの回数を記録するオブジェクト
+    
     function updateDisplay() {
       document.getElementById("hp-bar").style.width = stats.hp + "%";
       document.getElementById("mp-bar").style.width = stats.mp + "%";
@@ -92,6 +94,11 @@
     }
 
     function logAction(action) {
+       if (actionsLog[action]) {
+    actionsLog[action]++;
+  } else {
+    actionsLog[action] = 1;
+  }
       switch (action) {
         case "睡眠8時間":
           stats.hp = Math.min(stats.hp + 10, 100);
@@ -133,9 +140,14 @@
     }
 
     updateDisplay();
-    document.getElementById("saveBtn").addEventListener("click", function() {
-  const today = new Date().toISOString().slice(0,10); // 例: "2025-05-31"
-  localStorage.setItem(today, JSON.stringify(stats));
+   
+      document.getElementById("saveBtn").addEventListener("click", function() {
+  const today = new Date().toISOString().slice(0,10);
+  const saveData = {
+    stats: stats,
+    actions: actionsLog
+  };
+  localStorage.setItem(today, JSON.stringify(saveData));
   alert("今日の記録を保存しました！");
 });
 
