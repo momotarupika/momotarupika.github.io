@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>ステータス履歴一覧</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .record { border-bottom: 1px solid #ccc; margin-bottom: 15px; padding-bottom: 10px; }
+    .record strong { display: block; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>保存したステータス履歴</h1>
+  <div id="history"></div>
+
+  <script>
+    const historyDiv = document.getElementById("history");
+
+    // ローカルストレージの全キーを取得
+    const keys = Object.keys(localStorage).sort().reverse(); // 新しい順に並べ替え
+
+    if (keys.length === 0) {
+      historyDiv.innerText = "保存されたデータがありません。";
+    } else {
+      keys.forEach(key => {
+        try {
+          const data = JSON.parse(localStorage.getItem(key));
+          // 日付とステータスを表示
+          const recordDiv = document.createElement("div");
+          recordDiv.className = "record";
+          recordDiv.innerHTML = `
+            <strong>${key}</strong>
+            HP: ${data.hp}<br>
+            MP: ${data.mp}<br>
+            対人能力: ${data.communication}<br>
+            企画力: ${data.planning}<br>
+            論理力: ${data.logic}
+          `;
+          historyDiv.appendChild(recordDiv);
+        } catch(e) {
+          // JSONパース失敗したら無視
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
